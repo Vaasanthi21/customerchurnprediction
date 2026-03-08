@@ -206,9 +206,10 @@ def predict():
         'retain_probability': round(probability[0] * 100, 2)
     })
 
+# Train model on module load (for production)
+print("Training model...")
+train_model()
+print("Model trained successfully!")
+
 if __name__ == '__main__':
-    # Train model on startup
-    print("Training model...")
-    train_model()
-    print("Model trained successfully!")
     app.run(debug=False, host='0.0.0.0', port=5000)
