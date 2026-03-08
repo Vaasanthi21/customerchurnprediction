@@ -1,17 +1,23 @@
 from flask import Flask, render_template, request, jsonify
 import pandas as pd
 import numpy as np
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
-import io
-import base64
 import os
+
+# Try to import matplotlib/seaborn, but make them optional
+try:
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    import io
+    import base64
+    HAS_PLOTS = True
+except ImportError:
+    HAS_PLOTS = False
 
 app = Flask(__name__)
 
@@ -118,6 +124,9 @@ def train_model():
 
 def get_feature_importance_plot():
     """Generate feature importance plot"""
+    if not HAS_PLOTS:
+        return None
+    
     feature_importance = model.feature_importances_
     sorted_indices = np.argsort(feature_importance)[::-1]
     
@@ -139,6 +148,9 @@ def get_feature_importance_plot():
 
 def get_confusion_matrix_plot(cm):
     """Generate confusion matrix heatmap"""
+    if not HAS_PLOTS:
+        return None
+    
     plt.figure(figsize=(8, 6))
     sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
                 xticklabels=['No Churn', 'Churn'],
