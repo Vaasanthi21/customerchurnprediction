@@ -5,7 +5,7 @@ import sys
 import os
 
 # Add your project directory to the sys.path
-path = '/home/<yourusername>/customerchurnprediction'
+path = '/home/Vasanthi/customerchurnprediction'
 if path not in sys.path:
     sys.path.insert(0, path)
 
